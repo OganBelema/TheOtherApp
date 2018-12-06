@@ -18,6 +18,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.secureidltd.belemaogan.mynotekeeperprovidercontract.NoteKeeperProviderContract;
+import com.secureidltd.belemaogan.mynotekeeperprovidercontract.NoteKeeperProviderContract.Courses;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private SimpleCursorAdapter mSimpleCursorAdapter;
@@ -33,12 +36,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ListView courseListView = findViewById(R.id.list_courses);
 
         mSimpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2,
-                null, new String[]{"course_title", "course_id"},
+                null, new String[]{Courses.COLUMN_COURSE_TITLE, Courses.COLUMN_COURSE_ID},
                 new int[]{android.R.id.text1, android.R.id.text2});
 
         courseListView.setAdapter(mSimpleCursorAdapter);
 
-        getSupportLoaderManager().initLoader(COURSE_LOADER_ID, null, this);
+        getSupportLoaderManager().restartLoader(COURSE_LOADER_ID, null, this);
 
     }
 
@@ -67,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
-        Uri uri = Uri.parse("content://com.secureidltd.belemaogan.notekeeper.provider");
+        // = Uri.parse("content://com.secureidltd.belemaogan.notekeeper.provider");
+        Uri uri = Courses.CONTENT_URI;
 
         return new CursorLoader(this, uri, null, null, null, "course_title");
     }
